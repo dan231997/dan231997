@@ -1,1 +1,59 @@
+---
+- hosts: lanhost
+  become: yes
+  vars:
+    server_name: "{{ ansible_default_ipv4.address }}"
+    document_root: /var/www
+    app_root: html_demo_site-main
+  tasks:
+    - name: Update apt cache and install Nginx
+      yum:
+        name: nginx
+        state: latest
+        update_cache: yes
 
+    - name: Copy website files to the server's document root
+      copy:
+        src: "{{ app_root }}"
+        dest: "{{ document_root }}"
+        mode: preserve
+
+    - name: create folder sites-available
+      file:
+        path: /etc/nginx/sites-available
+        state: directory
+
+    - name: Apply Nginx template
+      template:
+        src: files/nginx.conf.j2
+        dest: /etc/nginx/sites-available/default
+      notify: Restart Nginx
+
+    - name: create folder sites-enabled
+      file:
+        path: /etc/nginx/sites-enabled
+        state: directory
+
+    - name: Enable new site
+      file:
+        src: /etc/nginx/sites-available/default
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+      notify: Restart Nginx
+
+    - name: Allow all access to tcp port 80
+      firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: enabled
+
+    - name: Reload Firewalld service
+      systemd:
+        name: firewalld
+        state: reloaded
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
