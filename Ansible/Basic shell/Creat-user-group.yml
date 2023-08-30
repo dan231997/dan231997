@@ -1,0 +1,16 @@
+- hosts: lanhost
+  vars:
+    fog_user: fog
+  tasks:
+    - name: Create a group for FOG
+      group:
+        name: fog-server
+        state: present
+
+    - name: Create a user for FOG
+      user:
+        name: "{{ fog_user }}"
+        shell: /bin/bash
+        group: fog-server
+        append: yes
+        createhome: yes
