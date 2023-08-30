@@ -1,0 +1,12 @@
+# File Inventory chứa thông tin node như IP , user pass login vào node
+vi inventory
+[lanhost]
+172.16.0.78
+[lanhost:vars]
+ansible_ssh_user=root
+ansible_ssh_pass=123
+---------------------------------------------------------------------------
+
+# Lệnh Ping node xem có thông nhau không ?
+ansible -i inventory -m ping lanhost
+---------------------------------------------------------------------------
