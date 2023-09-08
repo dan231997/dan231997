@@ -1,6 +1,5 @@
 - hosts: lanhost
   vars:
-    fog_user: fog
     fog_dhcp_server: 172.16.0.1
   tasks:
     - name: Create a group for FOG
@@ -22,6 +21,7 @@
         owner: "{{ fog_user }}"
         state: directory
 
+# Xóa biến fog_user trên "temp_settings.j2"
     - name: Write temp settings/answer file for FOG
       template:
         src: /root/install-Fog/temp_settings.j2
