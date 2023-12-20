@@ -1,0 +1,10 @@
+- hosts: lanhost #lanhost : thông tin tên của ip server cần cài
+  roles:
+    - fog  #Thư mục role fog
+
+
+
+    --------------------------------
+
+    Chạy lệnh chạy toàn bộ roles fog
+#ansible -i inventory -m ping lanhost
