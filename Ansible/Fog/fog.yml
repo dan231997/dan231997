@@ -7,4 +7,4 @@
     --------------------------------
 
     Chạy lệnh chạy toàn bộ roles fog
-#ansible -i inventory -m ping lanhost
+#ansible-playbook -i inventory fog.yml
